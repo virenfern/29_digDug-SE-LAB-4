@@ -9,9 +9,16 @@ DIRS = {pygame.K_UP: (-1, 0), pygame.K_DOWN: (1, 0), pygame.K_LEFT: (0, -1), pyg
 MOVE_DELAY, ENEMY_DELAY, PUMP_RANGE, DEFLATE_AFTER = 0.11, 0.35, 3, 1.5
 
 
+
 def dirt_color(row):
-    """Return an (r, g, b) colour for dirt in the given row, or None for the default gradient."""
-    pass
+    """Return an RGB color for dirt based on underground depth."""
+    if row < 4:
+        return (194, 145, 95)  # Upper layer: light brown
+    elif row < 8:
+        return (150, 100, 60)  # Middle layer: medium brown
+    else:
+        return (100, 65, 40)   # Deep layer: dark brown
+
 
 
 def on_enemy_popped(enemy, score):
@@ -32,6 +39,7 @@ def bfs_path(grid, start, goal):
     queue, parents = deque([start]), {start: None}
     while queue:
         cell = queue.popleft()
+
         if cell == goal:
             break
         for dr, dc in DIRS.values():
